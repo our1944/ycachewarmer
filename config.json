@@ -1,7 +1,7 @@
 {
   "lang": ["en", "de"],
   "currency": ["EUR", "USD"],
-  "concurrency": 2,
+  "concurrency": 4,
   "pid": "/tmp/ycachewarmerd.pid",
   "socket": "/tmp/ycachewarmerd.socket"
 }
