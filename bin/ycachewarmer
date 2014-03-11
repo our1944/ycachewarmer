@@ -1,0 +1,40 @@
+#!/usr/bin/env node
+
+var program = require('commander'),
+    daemon = require('daemon'),
+    fs = require('fs'),
+    config = require(__dirname + '/../config.json');
+
+var daemonize = function() {
+
+  if (fs.existsSync(config.pid)) {
+    console.log('pid existing: ' + config.pid);
+    console.log('you should kill the running process first');
+    return;
+  }
+
+  var child = daemon.daemon(__dirname + '/../lib/jobscheduler.js', []);
+
+  fs.writeFile(config.pid, child.pid, function(err) {
+    if (err) {
+      console.log('unable to write pid file, exiting');
+      return child.kill();
+    }
+  });
+};
+
+program
+  .version('0.0.1')
+  .option('-m, --monitoring', 'enter monitoring mode');
+
+program
+  .command('run [url]')
+  .description('run cachewarmer')
+  .option('-d, --daemon', 'running in background')
+  .action(function(url, options) {
+    daemonize();
+  });
+  
+program.parse(process.argv);
+
+// vim: filetype=javascript
