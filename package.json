@@ -8,7 +8,6 @@
     "xml2js": "^0.4.1",
     "bluebird": "^1.1.0",
     "request": "^2.34.0",
-    "forever-monitor": "^1.2.3",
     "daemon": "^1.1.0"
   },
   "devDependencies": {
