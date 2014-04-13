@@ -8,7 +8,8 @@
     "xml2js": "^0.4.1",
     "bluebird": "^1.1.0",
     "request": "^2.34.0",
-    "daemon": "^1.1.0"
+    "daemon": "^1.1.0",
+    "lodash": "^2.4.1"
   },
   "devDependencies": {
     "mocha": "^1.17.1"

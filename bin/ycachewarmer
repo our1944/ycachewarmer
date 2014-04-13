@@ -5,8 +5,11 @@ var program = require('commander'),
     fs = require('fs'),
     config = require(__dirname + '/../config.json');
 
-var daemonize = function() {
-
+var daemonize = function(url, options) {
+  url = url || '';
+  options = options || {};
+  
+  // check if warmer is running or not exited gracefully
   if (fs.existsSync(config.pid)) {
     console.log('pid existing: ' + config.pid);
     console.log('you should kill the running process first');
@@ -15,6 +18,7 @@ var daemonize = function() {
 
   var child = daemon.daemon(__dirname + '/../lib/jobscheduler.js', []);
 
+  // have to exit when writing pid fails
   fs.writeFile(config.pid, child.pid, function(err) {
     if (err) {
       console.log('unable to write pid file, exiting');
@@ -32,7 +36,7 @@ program
   .description('run cachewarmer')
   .option('-d, --daemon', 'running in background')
   .action(function(url, options) {
-    daemonize();
+    daemonize(url, options);
   });
   
 program.parse(process.argv);
