@@ -21,7 +21,7 @@ function daemonize(url, options) {
 
   //var child = daemon.daemon(__dirname + '/../lib/jobscheduler.js', [url, JSON.toString(config)]);
   //TODO
-  var child = spawn('node' + __dirname + '/../lib/jobscheduler.js', [url, JSON.stringify(config)], { detached: true });
+  var child = spawn(process.execPath, [__dirname + '/../lib/jobscheduler.js', url, JSON.stringify(config)], { stdio: ['ignore', 'ignore', 'ignore'], detached: true });
   
   // have to exit when writing pid fails
   fs.writeFile(config.pid, child.pid, function(err) {
