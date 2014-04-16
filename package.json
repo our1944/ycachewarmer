@@ -5,6 +5,12 @@
     "name": "Tao Yang",
     "email": "our1944@gmail.com"
   },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/our1944/ycachewarmer/raw/master/LICENSE"
+    }
+  ],
   "version": "0.0.1",
   "dependencies": {
     "commander": "^2.1.0",
