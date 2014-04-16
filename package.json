@@ -1,7 +1,10 @@
 {
   "name": "yachtico-cachewarmer",
   "description": "warm up cache using sitemap",
-  "private": true,
+  "author": {
+    "name": "Tao Yang",
+    "email": "our1944@gmail.com"
+  },
   "version": "0.0.1",
   "dependencies": {
     "commander": "^2.1.0",
