@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 
 var program = require('commander'),
-    daemon = require('daemon'),
+    spawn = require('child_process').spawn,
     fs = require('fs'),
-    config = require(__dirname + '/../config.json');
+    path = require('path');
+    
 
-var daemonize = function(url, options) {
+function daemonize(url, options) {
+  var config;
   url = url || '';
   options = options || {};
+  config = options.configfile;
   
   // check if warmer is running or not exited gracefully
   if (fs.existsSync(config.pid)) {
@@ -16,27 +19,48 @@ var daemonize = function(url, options) {
     return;
   }
 
-  var child = daemon.daemon(__dirname + '/../lib/jobscheduler.js', []);
-
+  //var child = daemon.daemon(__dirname + '/../lib/jobscheduler.js', [url, JSON.toString(config)]);
+  //TODO
+  var child = spawn('node' + __dirname + '/../lib/jobscheduler.js', [url, JSON.stringify(config)], { detached: true });
+  
   // have to exit when writing pid fails
   fs.writeFile(config.pid, child.pid, function(err) {
     if (err) {
       console.log('unable to write pid file, exiting');
       return child.kill();
     }
+    // allow parent to exit
+    child.unref()
   });
-};
+}
+
+
+function loadConfig(confPath) {
+  var config;
+  confPath = path.resolve(process.cwd(), confPath);
+  
+  if (!fs.existsSync(confPath)) {
+    console.log('config file does not exist, exiting...');
+    return;
+  }
+  
+  config = JSON.parse(fs.readFileSync(confPath, "utf8"));
+  return config;
+}
+
 
 program
   .version('0.0.1')
-  .option('-m, --monitoring', 'enter monitoring mode');
 
 program
   .command('run [url]')
   .description('run cachewarmer')
   .option('-d, --daemon', 'running in background')
+  .option('-c, --configfile [config path]', 'location of the config file [~/.ycachewarmer/config.json]', loadConfig, '~/.ycachewarmer/config.json')
   .action(function(url, options) {
-    daemonize(url, options);
+    if (options.configfile) {
+      daemonize(url, options); 
+    }
   });
   
 program.parse(process.argv);

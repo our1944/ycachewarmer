@@ -1,0 +1,10 @@
+{
+  "cookie": {
+    "language": ["en", "de"],
+    "currency_zone": ["EUR", "USD"]
+  },
+  "concurrency": 4,
+  "pid": "/tmp/ycachewarmerd.pid",
+  "socket": "/tmp/ycachewarmerd.socket",
+  "port": 8888
+}
